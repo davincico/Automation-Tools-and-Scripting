@@ -11,15 +11,15 @@ parser.add_argument("-f", "--file", required=True, help="file with list of items
 #assign the parse
 args = parser.parse_args()
 
-# ping a server list once (-c 1 flag requires admin priv)
-def executeCommand(serverList):
+# execute command given on every item in the list in the file
+def executeCommand(ListItems):
     command = args.command
 
     resultsList = []
 
-    for server in serverList:
+    for item in ListItems:
         temporary = subprocess.Popen(
-            [command, server], stdout=subprocess.PIPE
+            [command, item], stdout=subprocess.PIPE
     )
         result = str(temporary.communicate())
         resultsList.append(result)
@@ -42,12 +42,12 @@ if __name__ == '__main__':
     
     command = args.command
     file = args.file
-    serverList = list(open(file))
-    for i in range(len(serverList)):
-        serverList[i] = serverList[i].strip('\n')
+    ListItems = list(open(file))
+    for i in range(len(ListItems)):
+        ListItems[i] = ListItems[i].strip('\n')
 
-    print("Executing " + str(command) + " for the items list in the file, please wait ... \n " + str(serverList) + "\n")
-    resultsList = executeCommand(serverList)
+    print("Executing " + str(command) + " for the items list in the file, please wait ... \n " + str(ListItems) + "\n")
+    resultsList = executeCommand(ListItems)
     # print(resultsList)
 
     ResultCount = 0
